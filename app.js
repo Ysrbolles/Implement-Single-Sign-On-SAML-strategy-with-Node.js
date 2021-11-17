@@ -7,38 +7,52 @@ const fs = require('fs')
 const passpoort_setup = require('./passport_setup')
 const app = express()
 
-const samlCallback = function(passport) {
-    return function(req, res, next) {
-        passport.authenticate("samlStrategy", function(err, user, info) {
+app.use(passport.initialize())
 
-            const email = user.email;
+passport.serializeUser((user, done) => {
+    done(null, user);
+  });
+passport.deserializeUser((id, done) => {
+   done(null, id);
+  });
 
-            // check in database if user with that email exists
-            // ...
 
-            // if exists show content for registered users:
-            req.login(user, function(err) {
-                return res.redirect("/my-contents-page");
-            });
 
-            // application logic code
-            // ...
+passport.use("samlStrategy", new saml.Strategy(
+    {
+        callbackUrl: "/login-idp/callback",
+        entryPoint: "https://login.microsoftonline.com/86976bfe-0c39-4288-ac34-c3951d0faa22/saml2",
+        issuer: "Leafunder-ofppt",
+        // disableRequestAcsUrl: true,
+        // decryptionPvk: fs.readFileSync("./certs/leafunder-ofppt.pem", "utf8"),
+        // privateCert: fs.readFileSync("./certs/leafunder-ofppt.pem", "utf8"),
+        cert: fs.readFileSync("./certs/leafunder-ofppt.pem", "utf8"),
+        // identifierFormat: null
+        // more settings might be needed by the Identity Provider
+    },
+        function(req, profile, done) {
+            console.log("---------------------------------------");
+            console.log(profile);
+        done(null, profile);
+    }
+));
 
-            // if doesn't exist redirect to complete registration page
-            req.login(user, function(err) {
-                return res.redirect(
-                    "/complete-registration"
-                );
-            });
+app.get('/login-idp', passport.authenticate("samlStrategy", {
+    failureRedirect: '/app/failed',
+    failureFlash: true
+}))
 
-        })(req, res, next);
-
-    };
-};
-
-app.route("/login-idp").get(passport.authenticate("samlStrategy"));
-app.route("/login-idp/callback").post(samlCallback(passport));
-
+app.post(
+	'/login-idp/callback',
+	passport.authenticate('samlStrategy', {
+		failureRedirect: '/app/failed',
+		failureFlash: true
+	}),
+	(req, res) => {
+        console.log("hhhhh");
+		return res.redirect('/app');
+	}
+);
 
 
 app.listen(port, () => {
