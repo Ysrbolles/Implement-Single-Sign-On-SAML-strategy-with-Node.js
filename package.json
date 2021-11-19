@@ -23,6 +23,8 @@
     "fs": "0.0.1-security",
     "nodemon": "^2.0.15",
     "passport": "^0.5.0",
-    "passport-saml": "^3.2.0"
+    "passport-saml": "^3.2.0",
+    "saml2js": "^0.1.2",
+    "useragent": "^2.3.0"
   }
 }
