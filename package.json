@@ -18,13 +18,21 @@
   },
   "homepage": "https://github.com/Ysrbolles/Implement-Single-Sign-On-SAML-strategy-with-Node.js#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cros": "^1.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "fs": "0.0.1-security",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "passport": "^0.5.0",
     "passport-saml": "^3.2.0",
     "saml2js": "^0.1.2",
+    "serve-favicon": "^2.5.0",
     "useragent": "^2.3.0"
+  },
+  "resolutions": {
+    "passport-saml/xml-crypto": "0.10.1"
   }
 }

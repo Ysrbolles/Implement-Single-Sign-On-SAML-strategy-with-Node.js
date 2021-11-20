@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios'
+
+
+
 
 function App() {
 
+  const [email, setEmail] = useState("")
+
   useEffect(() => {
-    RedirectToLogin()
+    // RedirectToLogin()
+
   }, [])
   const RedirectToLogin = () => {
     window.location.replace('http://localhost:1337/login-idp');
@@ -13,15 +20,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo"  />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Hello I'm {email}
         </p>
         <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+         onClick={() => RedirectToLogin()}
         >
           Learn React
         </a>
