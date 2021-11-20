@@ -8,7 +8,7 @@ import axios from 'axios'
 
 function App() {
 
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState([])
 
   useEffect(() => {
     // RedirectToLogin()
@@ -21,7 +21,7 @@ function App() {
       console.log(res);
 
       if (res.data.user.id) {
-        setEmail(res.data.user.id)
+        setEmail(res.data.user)
       }
       // else {
       //   window.location.replace('http://localhost:1337/login-idp');
@@ -41,7 +41,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
        {email &&  <p >
-          Hello I'm {email}
+          Hello I'm {email.firstName + " "+ email.lastName}
         </p>}
         <a
          onClick={() => RedirectToLogin()}
