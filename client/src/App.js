@@ -40,7 +40,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-       {email &&  <p >
+       {email.id &&  <p >
           Hello I'm {email.firstName + " "+ email.lastName}
         </p>}
         <a
