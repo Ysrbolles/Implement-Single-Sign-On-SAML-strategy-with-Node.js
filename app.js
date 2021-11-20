@@ -175,7 +175,20 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors())
+// app.use(cors())
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', req.header('origin'));
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method == 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({});
+    }
+
+    next();
+});
 app.use(session(
     {
         resave: true,
@@ -204,19 +217,21 @@ app.post('/login-idp/callback',
     }),
     function (req, res) {
         console.log("hhhhhh");
-        return res.status(200).json({ user: req.user})
+       res.redirect("http://localhost:3000")
     }
 );
 
-// app.get("/whoiamm", (req, res) => {
-//     if (!req.isAuthenticated())
-//         return res.status(401).json({ message: "sir bhalek" })
-//     else {
-//         console.log("hhhhhhhhhokhhh");
-//         console.log(req.user);
-//         return res.status(200).json({ user: req.user})
-//     }
-// })
+app.get("/whoiamm", (req, res) => {
+    console.log("................................................................");
+    console.log(req.isAuthenticated());
+    if (!req.isAuthenticated())
+        return res.status(401).json({ message: "sir bhalek" })
+    else {
+        console.log("hhhhhhhhhokhhh");
+        console.log(req.user);
+        return res.status(200).json({ user: req.user})
+    }
+})
 // catch 404 and forward to error handler
 
 
