@@ -21,13 +21,14 @@ passport.deserializeUser(function (user, done) {
 passport.use(new SamlStrategy(
 	{
 		callbackUrl: "/login-idp/callback",
-		entryPoint: "https://login.microsoftonline.com/86976bfe-0c39-4288-ac34-c3951d0faa22/saml2",
-		issuer: "Leafunder-ofppt",
-		cert: fs.readFileSync("./certs/leafunder-ofppt.pem", "utf8"),
+		entryPoint: "https://login.microsoftonline.com/dae54ad7-43df-47b7-ae86-4ac13ae567af/saml2",
+		issuer: "http://localhost:1337",
+		cert: fs.readFileSync("./certs/LEAFUNDER.pem", "utf8"),
 		disableRequestAcsUrl: true,
 		wantAssertionsSigned: false,
 	},
 	function (profile, done) {
+		console.log(profile);
 		return done(null, {
 			id: profile['nameID'],
 			email: profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
