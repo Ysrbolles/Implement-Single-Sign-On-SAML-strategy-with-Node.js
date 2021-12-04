@@ -1,23 +1,22 @@
 const port = process.env.PORT || 1337
 const chalk = require('chalk');
 var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var fs = require('fs');
-const cors = require('cors');
 
 var SamlStrategy = require('passport-saml').Strategy;
+
 passport.serializeUser(function (user, done) {
 	done(null, user);
 });
+
 passport.deserializeUser(function (user, done) {
 	done(null, user);
 });
+
 passport.use(new SamlStrategy(
 	{
 		callbackUrl: "/login-idp/callback",
@@ -64,6 +63,7 @@ app.use((req, res, next) => {
 
 	next();
 });
+
 app.use(session(
 	{
 		resave: true,
@@ -85,6 +85,7 @@ app.get('/login-idp',
 		return res.status(200).json({ user: req.user })
 	}
 );
+
 app.post('/login-idp/callback',
 	passport.authenticate('saml', {
 		failureRedirect: '/login-idp',
